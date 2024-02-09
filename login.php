@@ -19,16 +19,20 @@ if ($checkEmail != 0) {
   if ($arrayu['PW'] != $PW) {
     $Message = "Password WRONG";
     $IsAdmin = "test";
+    $User_Name = null;
   } else {
     $IsAdmin = $arrayu['isAdmin'];
     $Message = "Success";
+    $User_Name = $arrayu['name'];
   }
 } else {
   $Message = "No account yet";
   $IsAdmin = "false";
+  $User_Name = null;
 }
 
-$response[] = array("Message" => $Message, "IsAdmin" => $IsAdmin);
+$response[] = array("Message" => $Message, "IsAdmin" => $IsAdmin, "User_Name" =>  $User_Name);
 // print_r($response);
+// echo $User_Name;
 echo json_encode($response);
 // echo json_encode($SQL);

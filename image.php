@@ -1,29 +1,30 @@
 <?php
 include('db.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $message = $_POST['message'];
+// Check if a file was uploaded
+if (isset($_FILES['image'])) {
+    $uploadDirectory = 'uploads/';
 
-    // Check if a file was uploaded
-    if ($_FILES['image']['error'] === 0) {
-        // Get image data
-        $imageData = file_get_contents($_FILES['image']['tmp_name']);
-        $imageData = $conn->real_escape_string($imageData);
-        $imageMimeType = $_FILES['image']['type'];
+    // Get the file details
+    $fileName = $_FILES['image']['name'];
+    $fileTmpName = $_FILES['image']['tmp_name'];
+    $fileSize = $_FILES['image']['size'];
+    $fileError = $_FILES['image']['error'];
+    $fileType = $_FILES['image']['type'];
 
-        $insertSql = "INSERT INTO notification (`name`, `message`, `image`, image_mime, `time`, `date`) 
-                      VALUES ('$name', '$message', '$imageData', '$imageMimeType', NOW(), NOW())";
+    // Move the uploaded file to the desired directory
+    $destination = $uploadDirectory . $fileName;
+    move_uploaded_file($fileTmpName, $destination);
 
-        if ($conn->query($insertSql) === TRUE) {
-            echo "Data uploaded successfully.";
-        } else {
-            echo "Error uploading data: " . $conn->error;
-        }
+    // Check if the file was uploaded successfully
+    if ($fileError === UPLOAD_ERR_OK) {
+        echo json_encode(['status' => 'success', 'message' => 'Image uploaded successfully']);
     } else {
-        echo "Error uploading image.";
+        echo json_encode(['status' => 'error', 'message' => 'Failed to upload image']);
     }
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'No file uploaded']);
 }
 
-// Close the database connection
-$conn->close();
+?>
+
