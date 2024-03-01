@@ -6,9 +6,11 @@ $PW = md5($decodedData['Password']); //password is hashed
 
 $SQL = "SELECT * FROM user WHERE email = '$Email'";
 
+$result = $conn->query($SQL);
+$data = array();
 
 $exeSQL = mysqli_query($conn, $SQL);
-$checkEmail =  mysqli_num_rows($exeSQL);
+$checkEmail = mysqli_num_rows($exeSQL);
 //$Message = "Success";
 
 if ($checkEmail != 0) {
@@ -17,10 +19,17 @@ if ($checkEmail != 0) {
 
   $arrayu = mysqli_fetch_array($exeSQL);
   if ($arrayu['PW'] != $PW) {
+
     $Message = "Password WRONG";
     $IsAdmin = "test";
     $User_Name = null;
+
   } else {
+    if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+      }
+    }
     $IsAdmin = $arrayu['isAdmin'];
     $Message = "Success";
     $User_Name = $arrayu['name'];
@@ -31,7 +40,7 @@ if ($checkEmail != 0) {
   $User_Name = null;
 }
 
-$response[] = array("Message" => $Message, "IsAdmin" => $IsAdmin, "User_Name" =>  $User_Name);
+$response[] = array("Message" => $Message, "IsAdmin" => $IsAdmin, "User_Name" => $User_Name, "Data" => $data);
 // print_r($response);
 // echo $User_Name;
 echo json_encode($response);
