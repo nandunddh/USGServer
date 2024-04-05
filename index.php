@@ -1,22 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-  <title>Devdactic Image Upload</title>
-</head>
-<body>
-<h1>Ionic Image Upload</h1>
-  <?php
-  $scan = scandir('uploads');
-  foreach($scan as $file)
-  {
-    if (!is_dir($file))
-    {
-        echo '<h3>'.$file.'</h3>';
-      echo '<img src="uploads/'.$file.'" style="width: 400px;"/><br />';
-    }
-  }
-  ?>
-</body>
-</html>
+<?php include "header.php";
+session_start(); // Start the session
+if (!isset($_SESSION['Email']) || $_SESSION['Email'] !== true) {
+  // User is not logged in, redirect to the login page
+  header("Location: login_web.php");
+  exit; // Stop further execution
+}
+?>
+
+<div class="row">
+  <div class="col-sm-auto">
+    <aside>
+      <p> USG App </p>
+      <a href="./">
+        <i class="fa fa-user-o" aria-hidden="true"></i>
+        Conference List
+      </a>
+      <a href="#">
+        <i class="fa fa-laptop" aria-hidden="true"></i>
+        Users List
+      </a>
+      <a href="#">
+        <i class="fa fa-clone" aria-hidden="true"></i>
+        Add Conference
+      </a>
+    </aside>
+  </div>
+  <div class="col-sm-8 text-center">
+    <div class="my-5 ">
+      <p class="fw-bold fs-2">Conference List</p>
+    </div>
+    <?php include "conferencedetails.php" ?>
+  </div>
+</div>
+<?php include "footer.php" ?>

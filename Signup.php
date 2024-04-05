@@ -5,6 +5,9 @@ $Name = $decodedData['Name'];
 $Email = $decodedData['Email'];
 $PW = md5($decodedData['Password']); //password is hashed
 $isAdmin = $decodedData['isAdmin'];
+$mobilenumber = $decodedData['mobilenumber'];
+$location = $decodedData['location'];
+$profile = $decodedData['profile'];
 
 $SQL = "SELECT * FROM user WHERE email = '$Email'";
 $exeSQL = mysqli_query($conn, $SQL);
@@ -14,14 +17,14 @@ if ($checkEmail != 0) {
   $Message = "Already registered";
 } else {
 
-  $InsertQuerry = "INSERT INTO user(`name`, `email`,  `PW`, `isAdmin`) VALUES('$Name', '$Email', '$PW', '$isAdmin')";
+  $InsertQuerry = "INSERT INTO user(`name`, `email`,  `PW`, `isAdmin`, `mobilenumber`, `location`, `profile`, `device_tokens`) VALUES('$Name', '$Email', '$PW', '$isAdmin', '$mobilenumber', '$location', '$profile')";
 
   $R = mysqli_query($conn, $InsertQuerry);
 
   if ($R) {
-    $Message = "Complete--!";
+    $Message = "Sign Up Success!";
   } else {
-    $Message = "Error";
+    $Message = "Kindly Try again after some time.";
   }
 }
 $response[] = array("Message" => $Message);

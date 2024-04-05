@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start the session
 include('Db.php');
 
 $Email = $decodedData['Email'];
@@ -40,7 +41,7 @@ if ($checkEmail != 0) {
   $User_Name = null;
 }
 
-$response[] = array("Message" => $Message, "IsAdmin" => $IsAdmin, "User_Name" => $User_Name, "Data" => $data);
+$response[] = array("Message" => $Message, "IsAdmin" => $IsAdmin, "User_Name" => $User_Name, "Data" => $data, "Email" => $Email);
 // print_r($response);
 // echo $User_Name;
 echo json_encode($response);
